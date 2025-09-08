@@ -1,0 +1,171 @@
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+
+import Button from "../../../shared/components/FormElements/Button/Button";
+import Card from "../../../shared/components/UI/Card/Card";
+import Modal from "../../../shared/components/UI/Modal/Modal";
+import ErrorModal from "../../../shared/components/UI/ErrorModal/ErrorModal";
+import LoadingSpinner from "../../../shared/components/UI/LoadingSpinner/LoadingSpinner";
+
+import useHttp from "../../../shared/hooks/http-hook";
+import { AuthContext } from "../../../shared/contexts/auth-context";
+import { ENDPOINTS, API_BASE_URL } from "../../../config.js";
+
+import classes from "./PlaceItem.module.css";
+
+function PlaceItem(props) {
+  const { isLoading, error, sendRequest, clearError } = useHttp();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const authContext = useContext(AuthContext);
+
+
+
+  function toggleShowDeleteModalHandler() {
+    setShowDeleteModal(!showDeleteModal);
+  }
+
+
+
+  async function deleteHandler() {
+    setShowDeleteModal(false);
+
+    try {
+      await sendRequest(
+        `${ENDPOINTS.PLUSH}/${props.id}`,
+        "DELETE",
+        null,
+        {
+          Authorization: `Bearer ${authContext.token}`,
+        }
+      );
+
+      props.onDelete(props.id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function handleLike() {
+    props.onLike(props.id, !props.likes?.includes(authContext.userId));
+  }
+
+  function handleRemoveFromList() {
+    if (props.onRemoveFromList) {
+      props.onRemoveFromList(props.id);
+    }
+  }
+
+  function handleWishlistAdd() {
+    props.onWishlistAdd(props.id);
+  }
+
+  return (
+    <>
+      <ErrorModal error={error} onClear={clearError} />
+      
+      {/* Delete Confirmation Modal */}
+      <Modal
+        show={showDeleteModal}
+        onCancel={toggleShowDeleteModalHandler}
+        header="Are you sure?"
+        footerClass="place-item__modal-actions"
+        footer={
+          <>
+            <Button onClick={toggleShowDeleteModalHandler} inverse>
+              Cancel
+            </Button>
+            <Button onClick={deleteHandler} danger>
+              Delete
+            </Button>
+          </>
+        }
+      >
+        <p style={{ margin: "1rem" }}>
+          Are you sure you want to delete this plush? This action cannot be
+          undone!
+        </p>
+      </Modal>
+
+
+
+      <li className={classes["place-item"]}>
+        <Card className={classes["place-item__content"]}>
+          {isLoading && <LoadingSpinner asOverlay />}
+          <div className={classes["place-item__image"]}>
+            <img
+              src={/^https?:\/\//.test(props.image) ? props.image : `${API_BASE_URL}/${props.image}`}
+              alt={props.name}
+            />
+
+          </div>
+          <div className={classes["place-item__info"]}>
+            <div className={classes["plush-info-top"]}>
+              <Link to={`/plush/${props.id}/detail`} className={classes["plush-name-link"]}>
+                <h2 className={classes["plush-name"]}>{props.name}</h2>
+              </Link>
+              {!props.profileView && (
+                <div className={classes["plush-meta"]}>
+                  <span className={classes["plush-brand"]}>{props.brand}</span>
+                  <span className={classes["plush-category"]}>{props.category}</span>
+                </div>
+              )}
+              <p className={classes["plush-description"]}>{props.description}</p>
+            </div>
+            <div className={classes["plush-info-bottom"]}>
+              {!props.profileView && (
+                <div className={classes["plush-stats"]}>
+                  <div className={classes["plush-rating"]}>
+                    <span className={classes["rating-stars"]}>
+                      {[...Array(5)].map((_, i) => (
+                        <span key={i} className={i < (props.rating || 0) ? classes.starFilled : classes.starEmpty}>
+                          ⭐
+                        </span>
+                      ))}
+                    </span>
+                    <span className={classes["rating-text"]}>
+                      {props.rating ? `${props.rating}/5` : "No rating"}
+                    </span>
+                  </div>
+                  <div className={classes["plush-price"]}>
+                    ${props.price || "N/A"}
+                  </div>
+                </div>
+              )}
+              {props.profileView ? (
+                <div className={classes["plush-actions"]}>
+                  <Button onClick={handleRemoveFromList} inverse>
+                    🗑️ Remove
+                  </Button>
+                </div>
+              ) : (
+                <div className={classes["plush-actions"]}>
+                  <Button onClick={handleLike} inverse>
+                    {props.likes?.includes(authContext.userId) ? "❤️ Liked" : "🤍 Like"}
+                  </Button>
+                  <Button onClick={handleWishlistAdd} inverse>
+                    💝 Add to Wishlist
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+          {!props.profileView && (
+            <div className={classes["place-item__actions"]}>
+              {authContext.userId === props.creatorId && (
+                <>
+                  <Button to={`/plush/${props.id}`}>Edit</Button>
+                  <Button onClick={toggleShowDeleteModalHandler} danger>
+                    Delete
+                  </Button>
+                </>
+              )}
+            </div>
+          )}
+        </Card>
+      </li>
+    </>
+  );
+}
+
+export default PlaceItem;

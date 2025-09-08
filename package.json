@@ -1,0 +1,39 @@
+{
+  "name": "ip-plush-hub",
+  "version": "1.0.0",
+  "description": "A comprehensive platform for IP plush enthusiasts",
+  "main": "backend/app.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "install-server": "cd backend && npm install",
+    "install-client": "cd frontend && npm install",
+    "install-all": "npm run install-server && npm run install-client",
+    "heroku-postbuild": "npm run install-all && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/ip-plush-hub.git"
+  },
+  "keywords": [
+    "mern",
+    "react",
+    "nodejs",
+    "mongodb",
+    "express",
+    "plush",
+    "collection",
+    "social"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yourusername/ip-plush-hub/issues"
+  },
+  "homepage": "https://github.com/yourusername/ip-plush-hub#readme",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
