@@ -578,7 +578,7 @@
 }
 
 .addButton {
-  background-color: #1a73e8;
+  background-color: #b7bdc6;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -591,7 +591,7 @@
 }
 
 .addButton:hover:not(:disabled) {
-  background-color: #1557b0;
+  background-color: #6b6d70;
   transform: translateY(-1px);
 }
 
@@ -621,20 +621,6 @@
   margin-top: 1rem;
 }
 
-.modalActions button {
-  background-color: #1a73e8;
-  color: white;
-  border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 4px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.modalActions button:hover {
-  background-color: #1557b0;
-}
 
 /* Create List Modal Styles */
 .createListModal {
@@ -671,7 +657,7 @@
 
 .listNameInput:focus {
   outline: none;
-  border-color: #1a73e8;
+  border-color: #b4b8bd;
   box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
 }
 
@@ -695,41 +681,7 @@
   margin-top: 1.5rem;
 }
 
-.modalActions button {
-  padding: 0.75rem 2rem;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-  font-size: 0.875rem;
-  min-width: 100px;
-}
 
-.modalActions button[data-inverse="true"] {
-  background-color: white;
-  color: #5f6368;
-  border: 1px solid #dadce0;
-}
-
-.modalActions button[data-inverse="true"]:hover {
-  background-color: #f8f9fa;
-  border-color: #5f6368;
-}
-
-.modalActions button:not([data-inverse="true"]) {
-  background-color: #1a73e8;
-  color: white;
-}
-
-.modalActions button:not([data-inverse="true"]):hover:not(:disabled) {
-  background-color: #1557b0;
-}
-
-.modalActions button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
 
 @media (max-width: 300px) {
   .plushContent {

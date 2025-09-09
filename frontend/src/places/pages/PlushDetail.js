@@ -523,44 +523,33 @@ function PlushDetail() {
             </div>
           </div>
           
-          {/* Favorites option */}
+          {/* Owned option */}
           <div className={`${classes.listOption} ${isFavorited ? classes.alreadyAdded : ''}`}>
-            <div className={classes.listIcon}>
-              <span className={classes.bookmarkIcon}>
-                {isFavorited ? '❤️' : '🔖'}
-              </span>
-            </div>
+            
             <div className={classes.listInfo}>
-              <span className={classes.listName}>Favorites</span>
+              <span className={classes.listName}>Owned</span>
               <span className={classes.itemCount}>
-                {isFavorited ? 'Already added' : 'Your favorite plushies'}
+                {isFavorited ? 'Already added' : 'Plushies you own'}
               </span>
             </div>
             <div className={classes.listActions}>
               {isFavorited ? (
                 <div className={classes.checkIcon}>✓</div>
               ) : (
-                <button 
-                  className={classes.addButton}
+                <Button 
                   onClick={addToFavorites}
                   disabled={isAddingToFavorites}
-                  style={{ 
-                    opacity: isAddingToFavorites ? 0.6 : 1
-                  }}
+                  inverse
                 >
                   {isAddingToFavorites ? 'Adding...' : 'Add'}
-                </button>
+                </Button>
               )}
             </div>
           </div>
 
           {/* Wishlist option */}
           <div className={`${classes.listOption} ${isWishlisted ? classes.alreadyAdded : ''}`}>
-            <div className={classes.listIcon}>
-              <span className={classes.bookmarkIcon}>
-                {isWishlisted ? '💝' : '🎁'}
-              </span>
-            </div>
+            
             <div className={classes.listInfo}>
               <span className={classes.listName}>Wishlist</span>
               <span className={classes.itemCount}>
@@ -571,16 +560,13 @@ function PlushDetail() {
               {isWishlisted ? (
                 <div className={classes.checkIcon}>✓</div>
               ) : (
-                <button 
-                  className={classes.addButton}
+                <Button 
                   onClick={addToWishlist}
                   disabled={isAddingToWishlist}
-                  style={{ 
-                    opacity: isAddingToWishlist ? 0.6 : 1
-                  }}
+                  inverse
                 >
                   {isAddingToWishlist ? 'Adding...' : 'Add'}
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -608,16 +594,13 @@ function PlushDetail() {
                   {isInThisList ? (
                     <div className={classes.checkIcon}>✓</div>
                   ) : (
-                    <button 
-                      className={classes.addButton}
+                    <Button 
                       onClick={() => addToCustomList(customList._id)}
                       disabled={isLoadingLists}
-                      style={{ 
-                        opacity: isLoadingLists ? 0.6 : 1
-                      }}
+                      inverse
                     >
                       Add
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -626,7 +609,7 @@ function PlushDetail() {
         </div>
         
         <div className={classes.modalActions}>
-          <Button onClick={closeAddToListModal}>
+          <Button onClick={closeAddToListModal} inverse>
             Done
           </Button>
         </div>
@@ -655,70 +638,50 @@ function PlushDetail() {
                     </span>
                   </div>
                   <div className={classes.photoPreview}>
-                    {allUserPhotos.length > 0 ? (
-                      <>
-                        {/* Left main photo */}
-                        <div className={classes.mainPhotoContainer}>
-                          <img
-                            src={allUserPhotos[0].imageUrl.startsWith('http') 
-                              ? allUserPhotos[0].imageUrl 
-                              : `${ASSET_BASE_URL}/${allUserPhotos[0].imageUrl.replace('uploads/images/', '')}`}
-                            alt={`${plush.name} - User Share`}
-                            className={classes.mainPhoto}
-                            onError={(e) => {
-                              console.error('Image load error:', e.target.src);
-                              e.target.src = 'https://via.placeholder.com/400x400?text=Image+Not+Found';
-                            }}
-                          />
-                          <div className={classes.photoInfo}>
-                            <span>@{allUserPhotos[0].uploader?.name || 'Anonymous User'}</span>
+                    {/* Always display plush's official image as main photo */}
+                    <div className={classes.mainPhotoContainer}>
+                      <img
+                        src={plush?.image ? `${ASSET_BASE_URL}/${plush.image}` : 'https://via.placeholder.com/400x400?text=No+Image'}
+                        alt={plush?.name || 'Plush'}
+                        className={classes.mainPhoto}
+                        onError={(e) => {
+                          console.error('Official plush image load error:', e.target.src);
+                          e.target.src = 'https://via.placeholder.com/400x400?text=Image+Not+Found';
+                        }}
+                      />
+                      <div className={classes.photoInfo}>
+                        <span>Official Image</span>
+                      </div>
+                    </div>
+                    
+                    {/* Right side small photo grid - show user uploaded photos */}
+                    {allUserPhotos.length > 0 && (
+                      <div className={classes.photoGridContainer}>
+                        {allUserPhotos.slice(0, 4).map((photo, index) => (
+                          <div key={photo.id || index} className={classes.gridPhotoContainer}>
+                            <img
+                              src={photo.imageUrl.startsWith('http') 
+                                ? photo.imageUrl 
+                                : `${ASSET_BASE_URL}/${photo.imageUrl.replace('uploads/images/', '')}`}
+                              alt={`${plush.name} - User Share ${index + 1}`}
+                              className={classes.gridPhoto}
+                              onError={(e) => {
+                                console.error('Grid image load error:', e.target.src);
+                                e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
+                              }}
+                            />
+                            {/* If it's the last one and there are more photos, show 'more' overlay */}
+                            {index === 3 && allUserPhotos.length > 4 && (
+                              <div 
+                                className={classes.morePhotosOverlay}
+                                onClick={navigateToPhotosPage}
+                                style={{ cursor: 'pointer' }}
+                              >
+                                +{allUserPhotos.length - 4}
+                              </div>
+                            )}
                           </div>
-                        </div>
-                        
-                        {/* Right side small photo grid */}
-                        <div className={classes.photoGridContainer}>
-                          {allUserPhotos.slice(1, 5).map((photo, index) => (
-                            <div key={photo.id || index} className={classes.gridPhotoContainer}>
-                              <img
-                                src={photo.imageUrl.startsWith('http') 
-                                  ? photo.imageUrl 
-                                  : `${ASSET_BASE_URL}/${photo.imageUrl.replace('uploads/images/', '')}`}
-                                alt={`${plush.name} - User Share ${index + 2}`}
-                                className={classes.gridPhoto}
-                                onError={(e) => {
-                                  console.error('Grid image load error:', e.target.src);
-                                  e.target.src = 'https://via.placeholder.com/200x200?text=No+Image';
-                                }}
-                              />
-                              {/* If it's the last one and there are more photos, show 'more' overlay */}
-                              {index === 3 && allUserPhotos.length > 5 && (
-                                <div 
-                                  className={classes.morePhotosOverlay}
-                                  onClick={navigateToPhotosPage}
-                                  style={{ cursor: 'pointer' }}
-                                >
-                                  +{allUserPhotos.length - 5}
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </>
-                    ) : (
-                      // When there are no user shared photos, display plush's default image
-                      <div className={classes.mainPhotoContainer}>
-                        <img
-                          src={plush?.image ? `${ASSET_BASE_URL}/${plush.image}` : 'https://via.placeholder.com/400x400?text=No+Image'}
-                          alt={plush?.name || 'Plush'}
-                          className={classes.mainPhoto}
-                          onError={(e) => {
-                            console.error('Default plush image load error:', e.target.src);
-                            e.target.src = 'https://via.placeholder.com/400x400?text=Image+Not+Found';
-                          }}
-                        />
-                        <div className={classes.photoInfo}>
-                          <span>Official Image</span>
-                        </div>
+                        ))}
                       </div>
                     )}
                   </div>

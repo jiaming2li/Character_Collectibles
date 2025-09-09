@@ -34,7 +34,7 @@ function MainNavigation(props) {
             <span />
           </button>
           <h1 className={classes["main-navigation__title"]}>
-            <Link to="/">IP Plush Hub</Link>
+            <Link to="/">Character Collectibles</Link>
           </h1>
           <nav className={classes["main-navigation__header-nav"]}>
             <NavLinks />

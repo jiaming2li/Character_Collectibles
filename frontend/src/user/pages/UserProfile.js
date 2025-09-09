@@ -289,7 +289,7 @@ function UserProfile() {
           {/* Sidebar Footer */}
           <div className={classes.sidebarFooter}>
             <p className={classes.copyright}>
-              © 2024 IP Plush Hub. All rights reserved.
+              © 2024 Character Collectibles. All rights reserved.
             </p>
             <div className={classes.footerLinks}>
               <a href="#" className={classes.footerLink}>Privacy Policy</a>

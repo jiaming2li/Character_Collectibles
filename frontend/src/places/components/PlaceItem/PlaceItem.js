@@ -100,55 +100,10 @@ function PlaceItem(props) {
 
           </div>
           <div className={classes["place-item__info"]}>
-            <div className={classes["plush-info-top"]}>
-              <Link to={`/plush/${props.id}/detail`} className={classes["plush-name-link"]}>
-                <h2 className={classes["plush-name"]}>{props.name}</h2>
-              </Link>
-              {!props.profileView && (
-                <div className={classes["plush-meta"]}>
-                  <span className={classes["plush-brand"]}>{props.brand}</span>
-                  <span className={classes["plush-category"]}>{props.category}</span>
-                </div>
-              )}
-              <p className={classes["plush-description"]}>{props.description}</p>
-            </div>
-            <div className={classes["plush-info-bottom"]}>
-              {!props.profileView && (
-                <div className={classes["plush-stats"]}>
-                  <div className={classes["plush-rating"]}>
-                    <span className={classes["rating-stars"]}>
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i} className={i < (props.rating || 0) ? classes.starFilled : classes.starEmpty}>
-                          ⭐
-                        </span>
-                      ))}
-                    </span>
-                    <span className={classes["rating-text"]}>
-                      {props.rating ? `${props.rating}/5` : "No rating"}
-                    </span>
-                  </div>
-                  <div className={classes["plush-price"]}>
-                    ${props.price || "N/A"}
-                  </div>
-                </div>
-              )}
-              {props.profileView ? (
-                <div className={classes["plush-actions"]}>
-                  <Button onClick={handleRemoveFromList} inverse>
-                    🗑️ Remove
-                  </Button>
-                </div>
-              ) : (
-                <div className={classes["plush-actions"]}>
-                  <Button onClick={handleLike} inverse>
-                    {props.likes?.includes(authContext.userId) ? "❤️ Liked" : "🤍 Like"}
-                  </Button>
-                  <Button onClick={handleWishlistAdd} inverse>
-                    💝 Add to Wishlist
-                  </Button>
-                </div>
-              )}
-            </div>
+            <Link to={`/plush/${props.id}/detail`} className={classes["plush-name-link"]}>
+              <h2 className={classes["plush-name"]}>{props.name}</h2>
+            </Link>
+            <p className={classes["plush-description"]}>{props.description}</p>
           </div>
           {!props.profileView && (
             <div className={classes["place-item__actions"]}>

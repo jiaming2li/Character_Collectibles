@@ -1,6 +1,6 @@
-# Contributing to IP Plush Hub
+# Contributing to Character Collectibles
 
-Thank you for your interest in contributing to IP Plush Hub! We welcome contributions from everyone.
+Thank you for your interest in contributing to Character Collectibles! We welcome contributions from everyone.
 
 ## 🚀 Getting Started
 
@@ -14,8 +14,8 @@ Thank you for your interest in contributing to IP Plush Hub! We welcome contribu
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/yourusername/ip-plush-hub.git
-   cd ip-plush-hub
+   git clone https://github.com/yourusername/character-collectibles.git
+   cd character-collectibles
    ```
 3. Install dependencies:
    ```bash
@@ -180,7 +180,7 @@ npm test -- --coverage
 
 - **Discord**: [Join our community](discord-invite-link)
 - **GitHub Discussions**: Ask questions and share ideas
-- **Email**: contact@iplushub.com
+- **Email**: contact@charactercollectibles.com
 
 ## 🎉 Recognition
 
@@ -201,4 +201,4 @@ Before submitting a PR, ensure:
 - [ ] No merge conflicts
 - [ ] Screenshots included (for UI changes)
 
-Thank you for contributing to IP Plush Hub! 🧸✨
+Thank you for contributing to Character Collectibles! 🧸✨

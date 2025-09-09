@@ -95,7 +95,7 @@ function Home() {
       <div className={classes.hero}>
         <div className={classes.heroContent}>
           <div className={classes.heroText}>
-            <h1 className={classes.heroTitle}>Find your perfect plush</h1>
+            <h1 className={classes.heroTitle}>Find your perfect plush and Figurine</h1>
             <p className={classes.heroSubtitle}>
               Discover amazing Hello Kitty, Sanrio, Disney, Pokemon, and other IP plush from collectors worldwide
             </p>
@@ -103,7 +103,7 @@ function Home() {
             <div className={classes.searchContainer}>
               <input
                 type="text"
-                placeholder="Search plush by name, brand, or category..."
+                placeholder="Search character by name, brand, or category..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className={classes.searchInput}
@@ -188,7 +188,7 @@ function Home() {
         
         {!isLoading && !searchTerm && !selectedCategory && (
           <div className={classes.featuredSection}>
-            <h2 className={classes.featuredTitle}>Featured Plush</h2>
+            <h2 className={classes.featuredTitle}>Trending Characters</h2>
             <SimpleImageGrid 
               items={plush || []}
               maxItems={20}
