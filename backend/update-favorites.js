@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('./models/user');
-const Place = require('./models/place');
+const Plush = require('./models/place');
 
 mongoose.connect("mongodb://127.0.0.1:27017/mern", {
   useUnifiedTopology: true,
@@ -20,7 +20,7 @@ async function updateUserFavorites() {
     console.log('Current favorites:', user.favorites || []);
     
     // 获取所有可用的 places
-    const places = await Place.find({});
+    const places = await Plush.find({});
     console.log('\nAvailable places:');
     places.forEach(place => {
       console.log(`- ${place._id}: ${place.title}`);

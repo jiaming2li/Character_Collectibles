@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 
-import Button from "../../FormElements/Button/Button";
 import { AuthContext } from "../../../contexts/auth-context";
 
 import classes from "./NavLinks.module.css";
@@ -23,7 +22,9 @@ function NavLinks() {
       )}
       {authContext.isLoggedIn && (
         <li>
-          <Button onClick={authContext.logout}>Logout</Button>
+          <button onClick={authContext.logout} className={classes.logoutButton}>
+            Logout
+          </button>
         </li>
       )}
     </ul>

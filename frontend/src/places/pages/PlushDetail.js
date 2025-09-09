@@ -39,6 +39,8 @@ function PlushDetail() {
   const [allUserPhotos, setAllUserPhotos] = useState([]);
   const [showPhotoUpload, setShowPhotoUpload] = useState(false);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [showSimpleModal, setShowSimpleModal] = useState(false);
+  const [simpleModalMessage, setSimpleModalMessage] = useState("");
 
   // Get current user information
   useEffect(() => {
@@ -192,11 +194,13 @@ function PlushDetail() {
   async function addToFavorites() {
     if (!authContext.isLoggedIn) {
       alert("Please log in to add items to favorites!");
+      setShowAddToListModal(false);
       return;
     }
     
     if (isFavorited) {
       alert("This item is already in your favorites!");
+      setShowAddToListModal(false);
       return;
     }
     
@@ -212,11 +216,11 @@ function PlushDetail() {
         }
       );
       setIsFavorited(true);
-      setShowAddToListModal(false);
       alert("Successfully added to favorites!");
     } catch (error) {
       console.log(error);
       if (error.message && error.message.includes("already in favorites")) {
+        clearError(); // Clear the error from useHttp so ErrorModal doesn't show
         alert("This item is already in your favorites!");
         setIsFavorited(true);
       } else {
@@ -224,17 +228,20 @@ function PlushDetail() {
       }
     } finally {
       setIsAddingToFavorites(false);
+      setShowAddToListModal(false);
     }
   }
 
   async function addToWishlist() {
     if (!authContext.isLoggedIn) {
       alert("Please log in to add items to wishlist!");
+      setShowAddToListModal(false);
       return;
     }
     
     if (isWishlisted) {
       alert("This item is already in your wishlist!");
+      setShowAddToListModal(false);
       return;
     }
     
@@ -250,11 +257,11 @@ function PlushDetail() {
         }
       );
       setIsWishlisted(true);
-      setShowAddToListModal(false);
       alert("Successfully added to wishlist!");
     } catch (error) {
       console.log(error);
       if (error.message && error.message.includes("already in wishlist")) {
+        clearError(); // Clear the error from useHttp so ErrorModal doesn't show
         alert("This item is already in your wishlist!");
         setIsWishlisted(true);
       } else {
@@ -262,6 +269,7 @@ function PlushDetail() {
       }
     } finally {
       setIsAddingToWishlist(false);
+      setShowAddToListModal(false);
     }
   }
 
@@ -327,11 +335,13 @@ function PlushDetail() {
   async function createNewList() {
     if (!newListName.trim()) {
       alert("Please enter a list name!");
+      setShowCreateListModal(false);
       return;
     }
 
     if (!authContext.isLoggedIn) {
       alert("Please log in to create lists!");
+      setShowCreateListModal(false);
       return;
     }
 
@@ -355,19 +365,21 @@ function PlushDetail() {
       setUserCustomLists(prev => [...prev, responseData.list]);
       
       alert(`Successfully created list "${newListName}" and added plush to it!`);
-      setShowCreateListModal(false);
       setNewListName("");
     } catch (error) {
       console.error("Error creating new list:", error);
       alert("Failed to create list. Please try again.");
     } finally {
       setIsCreatingList(false);
+      setShowCreateListModal(false);
+      setShowAddToListModal(false);
     }
   }
 
   async function addToCustomList(listId) {
     if (!authContext.isLoggedIn) {
       alert("Please log in to add items to lists!");
+      setShowAddToListModal(false);
       return;
     }
 
@@ -392,14 +404,16 @@ function PlushDetail() {
       );
 
       alert("Successfully added to list!");
-      setShowAddToListModal(false);
     } catch (error) {
       console.error("Error adding to custom list:", error);
       if (error.message && error.message.includes("already in this list")) {
+        clearError(); // Clear the error from useHttp so ErrorModal doesn't show
         alert("This item is already in that list!");
       } else {
         alert("Failed to add to list. Please try again.");
       }
+    } finally {
+      setShowAddToListModal(false);
     }
   }
 
@@ -760,6 +774,17 @@ function PlushDetail() {
           onCancel={handleCancelUpload}
           isLoading={isUploadingPhoto}
         />
+
+        {/* Simple Auto-Dismissing Modal */}
+        {showSimpleModal && (
+          <div className={classes.simpleModalOverlay}>
+            <div className={classes.simpleModal}>
+              <div className={classes.simpleModalContent}>
+                {simpleModalMessage}
+              </div>
+            </div>
+          </div>
+        )}
 
       </div>
     </>

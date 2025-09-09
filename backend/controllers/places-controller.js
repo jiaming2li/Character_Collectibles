@@ -29,10 +29,16 @@ async function getPlushById(req, res, next) {
 async function getAllPlush(req, res, next) {
   const { category, brand, sortBy = 'createdAt', order = 'desc', page = 1, limit = 10 } = req.query;
   
+  console.log('getAllPlush called with:', { category, brand, sortBy, order, page, limit });
+  console.log('Plush model name:', Plush.modelName);
+  console.log('Plush collection name:', Plush.collection.name);
+  
   let query = {};
   
   if (category) query.category = category;
   if (brand) query.brand = brand;
+  
+  console.log('Query:', query);
   
   try {
     const plush = await Plush.find(query)
@@ -42,7 +48,13 @@ async function getAllPlush(req, res, next) {
       .skip((page - 1) * limit)
       .exec();
       
+    console.log('Found plush:', plush.length);
+    if (plush.length > 0) {
+      console.log('First plush:', plush[0].name);
+    }
+      
     const total = await Plush.countDocuments(query);
+    console.log('Total count:', total);
     
     res.json({
       plush: plush.map(p => p.toObject({ getters: true })),
@@ -50,6 +62,7 @@ async function getAllPlush(req, res, next) {
       currentPage: page
     });
   } catch (err) {
+    console.log('Error in getAllPlush:', err);
     return next(new HttpError("Couldn't fetch plush!", 500));
   }
 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Card from "../../../shared/components/UI/Card/Card";
 import Button from "../../../shared/components/FormElements/Button/Button";
-import PlushItem from "../PlaceItem/PlaceItem";
+import PlaceItem from "../PlaceItem/PlaceItem";
 
 import classes from "./PlaceList.module.css";
 
@@ -120,7 +120,7 @@ function PlushList(props) {
       ) : (
         <ul className={classes["plush-list"]}>
           {filteredAndSortedItems.map((plush) => (
-            <PlushItem
+            <PlaceItem
               key={plush.id}
               id={plush.id}
               image={plush.image}

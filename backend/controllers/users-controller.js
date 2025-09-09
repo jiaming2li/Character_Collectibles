@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const User = require("../models/user");
-const Place = require("../models/place");
+const Plush = require("../models/place");
 const error = require("../models/http-error");
 
 async function getUsers(req, res, next) {
@@ -157,7 +157,7 @@ async function getUserById(req, res, next) {
   try {
     // 填充收藏的毛绒玩具
     if (user.plushCollection && user.plushCollection.length > 0) {
-      const plushCollection = await Place.find({
+      const plushCollection = await Plush.find({
         _id: { $in: user.plushCollection }
       });
       populatedUser.plushCollection = plushCollection.map(plush => 
@@ -169,7 +169,7 @@ async function getUserById(req, res, next) {
 
     // 填充愿望清单
     if (user.wishlist && user.wishlist.length > 0) {
-      const wishlist = await Place.find({
+      const wishlist = await Plush.find({
         _id: { $in: user.wishlist }
       });
       populatedUser.wishlist = wishlist.map(plush => 
@@ -181,7 +181,7 @@ async function getUserById(req, res, next) {
 
     // 填充收藏列表（likes/favorites）
     if (user.likes && user.likes.length > 0) {
-      const likes = await Place.find({
+      const likes = await Plush.find({
         _id: { $in: user.likes }
       });
       populatedUser.likes = likes.map(plush => 
@@ -197,7 +197,7 @@ async function getUserById(req, res, next) {
       const populatedCustomLists = await Promise.all(
         user.customLists.map(async (list) => {
           if (list.plushItems && list.plushItems.length > 0) {
-            const plushItems = await Place.find({
+            const plushItems = await Plush.find({
               _id: { $in: list.plushItems }
             });
             return {

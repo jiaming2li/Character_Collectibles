@@ -117,6 +117,13 @@ function PlaceItem(props) {
               )}
             </div>
           )}
+          {props.profileView && props.onRemoveFromList && (
+            <div className={classes["place-item__actions"]}>
+              <Button onClick={handleRemoveFromList}>
+                Remove
+              </Button>
+            </div>
+          )}
         </Card>
       </li>
     </>

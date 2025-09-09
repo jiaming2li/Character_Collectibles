@@ -19,7 +19,7 @@ function Home() {
     async function fetchPlush() {
       try {
         const data = await sendRequest(
-          `${ENDPOINTS.PLUSH}`
+          `${ENDPOINTS.PLUSH}?limit=50`
         );
 
         setPlush(data.plush);
@@ -66,7 +66,7 @@ function Home() {
     async function refreshPlush() {
       try {
         const data = await sendRequest(
-          `${ENDPOINTS.PLUSH}`
+          `${ENDPOINTS.PLUSH}?limit=50`
         );
         setPlush(data.plush);
       } catch (error) {

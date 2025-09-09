@@ -115,3 +115,10 @@ Character Collectibles - Your Plush & Figurine Hub. A comprehensive platform for
    - 🔧 Backend API: http://localhost:5000
    - 📊 API Documentation: http://localhost:5000/api
 
+
+5. **Test Account**
+   For testing the deployed application:
+   - **Email**: `test@test.com`
+   - **Password**: `password123`
+   - **Role**: Standard user with full access to features
+
